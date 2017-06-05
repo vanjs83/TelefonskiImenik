@@ -17,7 +17,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
+    private static final String TABLE_GROUP = "groups";//TABLE GROUP
     private static final String KEY_ID = "id";
+    private static final String KEY_GROUP = "idGroup";
     private static final String KEY_NAME = "name";
     private static final String KEY_SURNAME = "surname";
     private static final String KEY_PH_NO = "phone_number";
@@ -27,15 +29,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //3rd argument to be passed is CursorFactory instance
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
+    }
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
+         //Table for contacts
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
                 + KEY_NAME + " TEXT,"
                 + KEY_SURNAME + " TEXT,"
                 + KEY_PH_NO + " TEXT" + ");";
+      // db.execSQL(CREATE_CONTACTS_TABLE);
+          //Table for groups
+        String CREATE_CONTACTS_GROUP = "CREATE TABLE" + TABLE_GROUP + "("
+                + KEY_GROUP + "INTEGER PRIMARY KEY,"
+                + KEY_NAME + " TEXT," + ");";
+
         db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_CONTACTS_GROUP);
     }
 
     // Upgrading database
@@ -43,6 +63,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP);
 
         // Create tables again
         onCreate(db);
@@ -63,6 +84,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //2nd argument is String containing nullColumnHack
          db.close(); // Closing database connection
     }
+
+    public void addGroup(Group group){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, group.getName());   // Group Name
+        // Inserting Row
+        db.insert(TABLE_GROUP, null, values);
+
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+
+    }
+
+
 
 
     // code to get the single contact

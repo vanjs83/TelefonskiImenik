@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     //AppCompatActivity
     EditText mName, mSurname, mNumber, mGroup;
+    Spinner mSpinner;
     Button mButtSave;
     TextView text;
     public int ID;
@@ -27,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         mName = (EditText) findViewById(R.id.editIme);
         mSurname = (EditText) findViewById(R.id.editPrezime);
         mNumber = (EditText) findViewById(R.id.editNumber);
-        mGroup = (EditText) findViewById(R.id.editGrupa);
         mButtSave = (Button) findViewById(R.id.button);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
 
         //Creates
        db = new DatabaseHandler(this);
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
        // String c = db.getDatabaseName();
         //Toast.makeText(this, c, Toast.LENGTH_SHORT).show();
+        db.addGroup(new Group("Prijatelji"));
+        db.addGroup(new Group("Posao"));
+        db.addGroup(new Group("Obitelj"));
 
     }
 
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("MGROUP:" + mGroup);
 
         db.addContact(new Contact(name, surname, telNumber));
+
 
     }
 

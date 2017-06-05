@@ -16,9 +16,9 @@ public class Contact {
         this._phone_number = _phone_number;
     }
 
-    public Contact(String name, String suraname, String phone_number){
+    public Contact(String name, String surname, String phone_number){
         this._name = name;
-        this._surname = suraname;
+        this._surname = surname;
         this._phone_number = phone_number;
     }
 
