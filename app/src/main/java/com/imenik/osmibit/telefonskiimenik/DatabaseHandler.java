@@ -43,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
          //Table for contacts
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
                 + KEY_NAME + " TEXT,"
                 + KEY_SURNAME + " TEXT,"
@@ -51,7 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
       // db.execSQL(CREATE_CONTACTS_TABLE);
           //Table for groups
         String CREATE_CONTACTS_GROUP = "CREATE TABLE" + TABLE_GROUP + "("
-                + KEY_GROUP + "INTEGER PRIMARY KEY,"
+                + KEY_GROUP + "INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT," + ");";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -143,6 +143,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return contactList;
     }
+
+    public List<Group> getAllGroups() {
+        List<Group> groupList = new ArrayList<Group>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_GROUP;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Group group = new Group();
+                group.setID(Integer.parseInt(cursor.getString(0)));
+                group.setName(cursor.getString(1));
+                // Adding contact to list
+                groupList.add(group);
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return groupList;
+    }
+
+
 
     // code to update the single contact
     public int updateContact(Contact contact) {

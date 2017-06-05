@@ -17,9 +17,7 @@ public class Group {
     }
 
 
-    public int getID(){
-        return this.id;
-    }
+    public int getID(){return this.id; }
 
     public void setID(int _id){
         this.id = _id;
@@ -29,8 +27,9 @@ public class Group {
         return this.name;
     }
 
-    public void setName(String _name){
+    public String setName(String _name){
         this.name = _name;
+        return _name;
     }
 
 
