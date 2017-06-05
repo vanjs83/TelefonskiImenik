@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Document;
@@ -73,9 +74,9 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    public Boolean write(String fname, String fcontent) {
+    public Boolean writePdf(Contact contact, Group group)  {
         try {
-            String fpath = "/sdcard/" + fname + ".pdf";
+            String fpath = "/sdcard/" + "Imenik" + ".pdf";
             File file = new File(fpath);
             // If file does not exists, then create it
             if (!file.exists()) {
@@ -84,15 +85,16 @@ public class MainActivity extends AppCompatActivity  {
 
             // step 1
             Document document = new Document();
-
+            document.addAuthor("Tihomir Vanjurek");
+            document.addTitle("Phonebook");
             // step 2
             PdfWriter.getInstance(document,
                     new FileOutputStream(file.getAbsoluteFile()));
             // step 3
             document.open();
             // step 4
-            document.add(new Paragraph("Hello World!"));
-            document.add(new Paragraph("Hello World2!"));
+            document.add(new Paragraph("Hello this is PhoneBook!"));
+            document.add(new Paragraph(contact.getName() + ' ' + contact.getSurname()+ ' ' + contact.getPhoneNumber()+ ' ' + group.getName() ));
             // step 5
             document.close();
 
