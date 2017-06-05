@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.imenik.osmibit.telefonskiimenik.MainActivity" >
+
+    <EditText
+        android:id="@+id/editIme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Ime"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editPrezime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Prezime"
+        android:layout_below="@+id/editIme"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Broj telefona"
+        android:layout_below="@id/editPrezime"
+        tools:ignore="HardcodedText" />
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editNumber"
+        android:layout_alignRight="@+id/editNumber"
+        android:layout_alignEnd="@+id/editNumber" />
+
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spremi"
+        android:onClick="onSaveContact"
+        android:layout_below="@id/spinner"
+        tools:ignore="HardcodedText" />
+
+
+</RelativeLayout>
