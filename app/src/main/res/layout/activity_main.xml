@@ -59,5 +59,15 @@
         android:layout_below="@id/editGroup"
         tools:ignore="HardcodedText" />
 
+    <Button
+        android:id="@+id/buttonprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/editGroup"
+        android:layout_alignRight="@+id/editGroup"
+        android:layout_below="@+id/editGroup"
+        android:onClick="onPrintContact"
+        android:text="Print" />
+
 
 </RelativeLayout>
