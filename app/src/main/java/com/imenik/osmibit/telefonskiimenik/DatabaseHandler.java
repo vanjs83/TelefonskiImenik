@@ -75,6 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, contact.getName());   // Contact Name
+         System.out.println("addContack" + KEY_NAME);
         values.put(KEY_SURNAME, contact.getSurname()); // Contact Surname
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
@@ -91,6 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, group.getName());   // Group Name
+        System.out.println("addContack" + KEY_NAME + group.getName());
         // Inserting Row
         db.insert(TABLE_GROUP, null, values);
 
