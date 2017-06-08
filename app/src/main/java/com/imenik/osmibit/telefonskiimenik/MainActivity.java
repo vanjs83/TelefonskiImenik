@@ -1,33 +1,18 @@
 package com.imenik.osmibit.telefonskiimenik;
-import android.content.Context;
+
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
-import android.os.Build;
-import android.os.CancellationSignal;
 import android.os.Environment;
-
-import android.os.ParcelFileDescriptor;
-import android.print.PageRange;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintDocumentInfo;
-import android.print.PrintManager;
-import android.print.pdf.PrintedPdfDocument;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
@@ -35,30 +20,22 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Document;
-
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.itextpdf.text.Element.ALIGN_JUSTIFIED;
 import static com.itextpdf.text.Element.ALIGN_LEFT;
-import static com.itextpdf.text.pdf.BidiOrder.PDF;
-
 
 public class MainActivity extends AppCompatActivity {
 
     //AppCompatActivity
     EditText mName, mSurname, mNumber, mGroup;
     Button mButtSave, mButtPrint;
-    List<Contact> contact;
-    List<Group> group;
     public String name, surname, telNumber;
     DatabaseHandler db;
-
+    //List<Contact> contact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Creates
         db = new DatabaseHandler(this);
-
         db.addGroup(new Group("Prijatelji"));
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
+
+
         // String c = db.getDatabaseName();
         //Toast.makeText(this, c, Toast.LENGTH_SHORT).show();
+
     }
 
     public void onSaveContact(View view) {
@@ -97,12 +76,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPrintContact(View view) {
-        //  writePdf();
-        createPDF();
+            //  writePdf();
+             createPDF();
+
     }
-
-
-
 
     public void writePdf() {
 
@@ -179,14 +156,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     public void createPDF() {//This method works for create pdf file
 
-
-        Document doc = new Document(PageSize.A4.rotate());
+        Document doc = new Document(PageSize.A4);
 
         try {
 
-            File f = File.createTempFile( "imenik", ".pdf", getExternalCacheDir());
+           File f = File.createTempFile( "imenik", ".pdf", getExternalCacheDir());
             f.createNewFile();
             f.getAbsolutePath();
            // if(!dir.exists())
@@ -201,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             doc.addTitle("Phonebook");
             doc.addAuthor("Tihomir Vanjurek");
             /* Create Paragraph and Set Font */
-            Paragraph p1 = new Paragraph("Hi!");
+            Paragraph p1 = new Paragraph("Hi pdf is here!");
             p1.setAlignment(ALIGN_LEFT);
             //add paragraph to document
             doc.add(p1);
