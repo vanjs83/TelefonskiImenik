@@ -18,6 +18,10 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfNumber;
+import com.itextpdf.text.pdf.PdfPage;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Document;
 import java.io.ByteArrayOutputStream;
@@ -72,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("TELNUBER:" + telNumber);
         db = new DatabaseHandler(this);
         db.addContact(new Contact(name, surname, telNumber));
-        contact = new ArrayList<Contact>();
-        contact = db.getAllContacts();
-
-
-
+        
     }
 
     public void onPrintContact(View view) {
@@ -99,12 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("PDFCreator", "PDF Path: " + path);
 
-
             File file = new File(dir, "sample.pdf");
             FileOutputStream fOut = new FileOutputStream(file);
 
             PdfWriter.getInstance(document, fOut);
-
             //open the document
             document.open();
 
@@ -134,8 +132,6 @@ public class MainActivity extends AppCompatActivity {
             document.add(myImg);
 
 
-
-
         } catch (DocumentException de) {
             Log.e("PDFCreator", "DocumentException:" + de);
         } catch (IOException e) {
@@ -145,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         {
             document.close();
         }
-
-
 
 
     }
@@ -162,9 +156,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     public void createPDF() {//This method works for create pdf file
 
         Document doc = new Document(PageSize.A4);
+
 
         try {
 
@@ -178,15 +175,17 @@ public class MainActivity extends AppCompatActivity {
          //   File file = new File(dir, "Imenik.pdf");
             FileOutputStream fOut = new FileOutputStream(f);
             PdfWriter.getInstance(doc, fOut);
+
             //open the document
             doc.open();
             doc.addTitle("Phonebook");
             doc.addAuthor("Tihomir Vanjurek");
             /* Create Paragraph and Set Font */
-            Paragraph p1 = new Paragraph("Hi pdf is here!");
+            Paragraph p1 = new Paragraph("Hi pdf is here and it is first page!");
             p1.setAlignment(ALIGN_LEFT);
             //add paragraph to document
             doc.add(p1);
+            //add new page
             Paragraph p2 = new Paragraph("This is an PhoneBook");
             p2.setAlignment(ALIGN_LEFT);
             doc.add(p2);
