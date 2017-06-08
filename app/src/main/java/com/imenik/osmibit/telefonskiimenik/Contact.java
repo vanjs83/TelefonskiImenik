@@ -5,7 +5,6 @@ package com.imenik.osmibit.telefonskiimenik;
  */
 public class Contact {
     int _id;
-    Group _groupId;
     String _name;
     String _surname;
     String _phone_number;

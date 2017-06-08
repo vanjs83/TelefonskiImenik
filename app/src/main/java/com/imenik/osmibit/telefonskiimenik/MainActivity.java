@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button mButtSave, mButtPrint;
     public String name, surname, telNumber;
     DatabaseHandler db;
-    //List<Contact> contact;
+    List<Contact> contact;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +70,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
-
+        db = new DatabaseHandler(this);
         db.addContact(new Contact(name, surname, telNumber));
+        contact = new ArrayList<Contact>();
+        contact = db.getAllContacts();
+
+
 
     }
 

@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "contactsManager";
+    private static final String DATABASE_NAME = "contactsManager.db";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
     private static final String KEY_ID = "id";
@@ -43,15 +43,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
          //Table for contacts
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+              //  + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
                 + KEY_NAME + " TEXT,"
                 + KEY_SURNAME + " TEXT,"
                 + KEY_PH_NO + " TEXT" + ");";
       // db.execSQL(CREATE_CONTACTS_TABLE);
           //Table for groups
         String CREATE_CONTACTS_GROUP = "CREATE TABLE" + TABLE_GROUP + "("
-                + KEY_GROUP + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_GROUP + "INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT," + ");";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -75,7 +75,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, contact.getName());   // Contact Name
-         System.out.println("addContack" + KEY_NAME);
         values.put(KEY_SURNAME, contact.getSurname()); // Contact Surname
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
@@ -89,10 +88,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addGroup(Group group){
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, group.getName());   // Group Name
-        System.out.println("addContack" + KEY_NAME + group.getName());
         // Inserting Row
         db.insert(TABLE_GROUP, null, values);
 
@@ -143,6 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         // return contact list
+        cursor.close();
         return contactList;
     }
 
@@ -165,6 +163,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         // return contact list
+        cursor.close();
         return groupList;
     }
 
