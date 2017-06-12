@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION =1;
+    private static final int DATABASE_VERSION =2;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
@@ -71,15 +71,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // code to add the new contact
      public boolean addContact(Contact contact) {
-        SQLiteDatabase db = this.getWritableDatabase();
+         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName());   // Contact Name
-        values.put(KEY_SURNAME, contact.getSurname()); // Contact Surname
-        values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
+         ContentValues values = new ContentValues();
+         values.put(KEY_NAME, contact.getName());   // Contact Name
+         values.put(KEY_SURNAME, contact.getSurname()); // Contact Surname
+         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
         // Inserting Row
-        Long results = db.insert(TABLE_CONTACTS, null, values);
+         Long results = db.insert(TABLE_CONTACTS, null, values);
          if(results == -1)
              return false;
          else
@@ -94,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, group.getName());   // Group Name
         // Inserting Row
-       Long results = db.insert(TABLE_GROUP, null, values);
+        Long results = db.insert(TABLE_GROUP, null, values);
         if(results == -1)
             return false;
         else
@@ -193,6 +193,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(contact.getID()) });
         db.close();
     }
+
+    // Deleting single contact
+    public void deleteGroup(Group group) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GROUP, KEY_GROUP + " = ?",
+                new String[] { String.valueOf(group.getID()) });
+        db.close();
+    }
+
 
     // Getting contacts Count
     public int getContactsCount() {

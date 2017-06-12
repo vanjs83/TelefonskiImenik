@@ -45,7 +45,7 @@ public class Contact {
     }
 
     public void setSurname(String name){
-        this._name = name;
+        this._surname = name;
     }
 
     public String getPhoneNumber(){

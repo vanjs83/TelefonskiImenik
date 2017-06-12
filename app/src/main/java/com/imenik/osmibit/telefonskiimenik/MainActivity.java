@@ -69,16 +69,15 @@ public class MainActivity extends AppCompatActivity {
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
 
-        /*
+
         List<Group> group = db.getAllGroups();
         for (Group gn : group) {
             String log = "Id: "+ gn.getID()+" ,Name: " + gn.getName();
             // Writing Contacts to log
-            Log.d("Name: ", log);
              System.out.println(log);
 
         }
-        */
+
     }
 
     public void onSaveContact(View view) {
@@ -98,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Data inserted", Toast.LENGTH_LONG).show();
         }
    //     db.addContact(new Contact(name, surname, telNumber));
+        List<Contact> contact = db.getAllContacts();
+        for (Contact cn : contact) {
+            String log = "Id: "+ cn.getID()+ " ,Name: " + cn.getName() + " , Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+            // Writing Contacts to log
+            System.out.println(log);
+
+        }
 
     }
 
