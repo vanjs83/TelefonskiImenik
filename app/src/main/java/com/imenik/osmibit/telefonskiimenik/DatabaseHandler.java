@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "contactsManager.db";
+    private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
     private static final String KEY_ID = "id";
@@ -28,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
     }
-
+/*
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -37,7 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
     }
-
+*/
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -51,7 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
       // db.execSQL(CREATE_CONTACTS_TABLE);
           //Table for groups
         String CREATE_CONTACTS_GROUP = "CREATE TABLE" + TABLE_GROUP + "("
-                + KEY_GROUP + "INTEGER PRIMARY KEY,"
+                + KEY_GROUP + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT," + ");";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -99,8 +99,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-
-
     // code to get the single contact
     Contact getContact(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -140,7 +138,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         // return contact list
-        cursor.close();
         return contactList;
     }
 
@@ -163,7 +160,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         // return contact list
-        cursor.close();
         return groupList;
     }
 

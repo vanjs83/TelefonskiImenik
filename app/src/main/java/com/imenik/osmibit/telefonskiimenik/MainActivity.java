@@ -1,14 +1,17 @@
 package com.imenik.osmibit.telefonskiimenik;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,10 +62,15 @@ public class MainActivity extends AppCompatActivity {
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
 
-
-        // String c = db.getDatabaseName();
-        //Toast.makeText(this, c, Toast.LENGTH_SHORT).show();
-
+        /*
+        List<Group> group = db.getAllGroups();
+        for (Group gn : group) {
+            String log = "Id: "+ gn.getID()+" ,Name: " + gn.getName();
+            // Writing Contacts to log
+            Log.d("Name: ", log);
+             System.out.println(log);
+        }
+         */
     }
 
     public void onSaveContact(View view) {
@@ -74,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
-        db = new DatabaseHandler(this);
         db.addContact(new Contact(name, surname, telNumber));
-        
+
     }
 
     public void onPrintContact(View view) {
@@ -155,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
     public void createPDF() {//This method works for create pdf file
 
         Document doc = new Document(PageSize.A4);
@@ -186,9 +190,11 @@ public class MainActivity extends AppCompatActivity {
             //add paragraph to document
             doc.add(p1);
             //add new page
+            doc.newPage();
             Paragraph p2 = new Paragraph("This is an PhoneBook");
             p2.setAlignment(ALIGN_LEFT);
             doc.add(p2);
+
 
             viewPdf(f);
         } catch (DocumentException de) {

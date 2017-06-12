@@ -27,9 +27,8 @@ public class Group {
         return this.name;
     }
 
-    public String setName(String _name){
+    public void setName(String _name){
         this.name = _name;
-        return _name;
     }
 
 
