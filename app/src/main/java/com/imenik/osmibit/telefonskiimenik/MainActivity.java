@@ -62,23 +62,16 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHandler(this);
         boolean insert = db.addGroup(new Group("Prijatelji"));
         if (insert == false) {
-            Toast.makeText(getApplicationContext(), "Data not inserted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "Data inserted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
         }
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
 
-
-        List<Group> group = db.getAllGroups();
-        for (Group gn : group) {
-            String log = "Id: "+ gn.getID()+" ,Name: " + gn.getName();
-            // Writing Contacts to log
-             System.out.println(log);
-
         }
 
-    }
+
 
     public void onSaveContact(View view) {
         //insert on database
@@ -92,18 +85,13 @@ public class MainActivity extends AppCompatActivity {
         boolean insert = db.addContact(new Contact(name, surname, telNumber));
 
         if (insert == false) {
-            Toast.makeText(getApplicationContext(), "Data not inserted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "Data inserted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
         }
    //     db.addContact(new Contact(name, surname, telNumber));
-        List<Contact> contact = db.getAllContacts();
-        for (Contact cn : contact) {
-            String log = "Id: "+ cn.getID()+ " ,Name: " + cn.getName() + " , Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
-            // Writing Contacts to log
-            System.out.println(log);
 
-        }
+
 
     }
 
@@ -111,67 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPrintContact(View view) {
             //  writePdf();
-             createPDF();
-
-    }
-
-    public void writePdf() {
-
-        // TODO Auto-generated method stub
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-
-        try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/vindroid";
-
-            File dir = new File(path);
-            if(!dir.exists())
-                dir.mkdirs();
-
-            Log.d("PDFCreator", "PDF Path: " + path);
-
-            File file = new File(dir, "sample.pdf");
-            FileOutputStream fOut = new FileOutputStream(file);
-
-            PdfWriter.getInstance(document, fOut);
-            //open the document
-            document.open();
-
-
-            Paragraph p1 = new Paragraph("Sample PDF CREATION USING IText");
-            Font paraFont= new Font(Font.FontFamily.COURIER);
-            p1.setAlignment(Paragraph.ALIGN_CENTER);
-            p1.setFont(paraFont);
-
-            //add paragraph to document
-            document.add(p1);
-
-            Paragraph p2 = new Paragraph("This is an example of a simple paragraph");
-            Font paraFont2= new Font(Font.FontFamily.COURIER,14.0f,0, CMYKColor.GREEN);
-            p2.setAlignment(Paragraph.ALIGN_CENTER);
-            p2.setFont(paraFont2);
-
-            document.add(p2);
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            Bitmap bitmap = BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.ic_launcher);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
-            Image myImg = Image.getInstance(stream.toByteArray());
-            myImg.setAlignment(Image.MIDDLE);
-
-            //add image to document
-            document.add(myImg);
-
-
-        } catch (DocumentException de) {
-            Log.e("PDFCreator", "DocumentException:" + de);
-        } catch (IOException e) {
-            Log.e("PDFCreator", "ioException:" + e);
+        StringBuffer buffer = new StringBuffer();
+        List<Contact> contact = db.getAllContacts();
+        for (Contact cn : contact) {
+            String con = "Id: " + cn.getID() + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+            buffer.append(con).append("\n");
         }
-        finally
-        {
-            document.close();
-        }
-
+        createPDF(buffer);
 
     }
 
@@ -185,10 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void createPDF() {//This method works for create pdf file
+    public void createPDF(StringBuffer buffer) {//This method works for create pdf file
 
         Document doc = new Document(PageSize.A4);
-
 
         try {
 
@@ -208,13 +141,13 @@ public class MainActivity extends AppCompatActivity {
             doc.addTitle("Phonebook");
             doc.addAuthor("Tihomir Vanjurek");
             /* Create Paragraph and Set Font */
-            Paragraph p1 = new Paragraph("Hi pdf is here and it is first page!");
+            Paragraph p1 = new Paragraph("This is an PhoneBook");
             p1.setAlignment(ALIGN_LEFT);
             //add paragraph to document
             doc.add(p1);
             //add new page
-            doc.newPage();
-            Paragraph p2 = new Paragraph("This is an PhoneBook");
+           // doc.newPage();
+            Paragraph p2 = new Paragraph(buffer.toString());
             p2.setAlignment(ALIGN_LEFT);
             doc.add(p2);
 
