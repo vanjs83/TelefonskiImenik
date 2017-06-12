@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION =1;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
@@ -43,16 +43,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
          //Table for contacts
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
               //  + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
                 + KEY_NAME + " TEXT,"
                 + KEY_SURNAME + " TEXT,"
                 + KEY_PH_NO + " TEXT" + ");";
       // db.execSQL(CREATE_CONTACTS_TABLE);
           //Table for groups
-        String CREATE_CONTACTS_GROUP = "CREATE TABLE" + TABLE_GROUP + "("
-                + KEY_GROUP + " INTEGER PRIMARY KEY,"
-                + KEY_NAME + " TEXT," + ");";
+        String CREATE_CONTACTS_GROUP = "CREATE TABLE " + TABLE_GROUP + "("
+                + KEY_GROUP + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_NAME + " TEXT" + ");";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_CONTACTS_GROUP);
@@ -70,7 +70,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // code to add the new contact
-     public void addContact(Contact contact) {
+     public boolean addContact(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -79,22 +79,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
         // Inserting Row
-        db.insert(TABLE_CONTACTS, null, values);
-
+        Long results = db.insert(TABLE_CONTACTS, null, values);
+         if(results == -1)
+             return false;
+         else
+             return true;
         //2nd argument is String containing nullColumnHack
-         db.close(); // Closing database connection
+       //  db.close(); // Closing database connection
     }
 
-    public void addGroup(Group group){
+    public boolean addGroup(Group group){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, group.getName());   // Group Name
         // Inserting Row
-        db.insert(TABLE_GROUP, null, values);
+       Long results = db.insert(TABLE_GROUP, null, values);
+        if(results == -1)
+            return false;
+        else
+            return true;
 
         //2nd argument is String containing nullColumnHack
-        db.close(); // Closing database connection
+        //db.close(); // Closing database connection
 
     }
 

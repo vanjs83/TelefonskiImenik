@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -58,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Creates
         db = new DatabaseHandler(this);
-        db.addGroup(new Group("Prijatelji"));
+        boolean insert = db.addGroup(new Group("Prijatelji"));
+        if (insert == false) {
+            Toast.makeText(getApplicationContext(), "Data not inserted", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Data inserted", Toast.LENGTH_LONG).show();
+        }
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
 
@@ -69,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
             // Writing Contacts to log
             Log.d("Name: ", log);
              System.out.println(log);
+
         }
-         */
+        */
     }
 
     public void onSaveContact(View view) {
@@ -82,9 +90,18 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
-        db.addContact(new Contact(name, surname, telNumber));
+        boolean insert = db.addContact(new Contact(name, surname, telNumber));
+
+        if (insert == false) {
+            Toast.makeText(getApplicationContext(), "Data not inserted", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Data inserted", Toast.LENGTH_LONG).show();
+        }
+   //     db.addContact(new Contact(name, surname, telNumber));
 
     }
+
+
 
     public void onPrintContact(View view) {
             //  writePdf();
