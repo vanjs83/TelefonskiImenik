@@ -41,21 +41,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-         //Table for contacts
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_GROUP + " INTEGER" + "FOREIGN KEY(" + KEY_GROUP + ")REFERENCES " + TABLE_GROUP + "((KEY_GROUP)" + "),"
-                + KEY_NAME + " TEXT,"
-                + KEY_SURNAME + " TEXT,"
-                + KEY_PH_NO + " TEXT" + ");";
-      // db.execSQL(CREATE_CONTACTS_TABLE);
-          //Table for groups
+        //Table for groups
         String CREATE_CONTACTS_GROUP = "CREATE TABLE " + TABLE_GROUP + "("
                 + KEY_GROUP + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT" + ");";
 
-        db.execSQL(CREATE_CONTACTS_TABLE);
+         //Table for contacts
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_GROUP + " INTEGER NOT NULL,"
+                + KEY_NAME + " TEXT,"
+                + KEY_SURNAME + " TEXT,"
+                + KEY_PH_NO + " TEXT"
+                + "FOREIGN KEY (" + KEY_GROUP + ") REFERENCES " + TABLE_GROUP + "(" + KEY_GROUP + ")"
+                + ");";
+      // db.execSQL(CREATE_CONTACTS_TABLE);
+
+
+
         db.execSQL(CREATE_CONTACTS_GROUP);
+        db.execSQL(CREATE_CONTACTS_TABLE);
+
     }
 
     // Upgrading database
@@ -74,16 +80,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
          SQLiteDatabase db = this.getWritableDatabase();
 
          ContentValues values = new ContentValues();
+         values.put(KEY_GROUP, contact.getGroupID()); //Contact groupId
          values.put(KEY_NAME, contact.getName());   // Contact Name
          values.put(KEY_SURNAME, contact.getSurname()); // Contact Surname
          values.put(KEY_PH_NO, contact.getPhoneNumber()); // Contact Phone
 
         // Inserting Row
          Long results = db.insert(TABLE_CONTACTS, null, values);
-         if(results == -1)
-             return false;
-         else
-             return true;
+         if (results != -1) return true;
+         else return false;
         //2nd argument is String containing nullColumnHack
        //  db.close(); // Closing database connection
     }
@@ -116,8 +121,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2),cursor.getString(3));
+        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),
+                cursor.getString(2), cursor.getString(3),cursor.getString(4));
         // return contact
         return contact;
     }
@@ -136,9 +141,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do {
                 Contact contact = new Contact();
                 contact.setID(Integer.parseInt(cursor.getString(0)));
-                contact.setName(cursor.getString(1));
-                contact.setSurname(cursor.getString(2));
-                contact.setPhoneNumber(cursor.getString(3));
+                contact.setGroupID(Integer.parseInt(cursor.getString(1)));
+                contact.setName(cursor.getString(2));
+                contact.setSurname(cursor.getString(3));
+                contact.setPhoneNumber(cursor.getString(4));
                 // Adding contact to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
@@ -146,6 +152,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // return contact list
         return contactList;
+    }
+
+    //ADD ALL RECORD FROM CONATACT AND GROUP TABLE
+    public Cursor getAllRecords() {
+     //   List<Cursor> cursorList = new ArrayList<Cursor>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS + " tc"
+                             + " INNER JOIN " + TABLE_GROUP
+                             + " tg" + " ON" + " tc." + KEY_GROUP + "=" + "tg." + KEY_GROUP;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+       // if (cursor.moveToFirst()) {
+       //     do {
+       //         cursorList.add(cursor);
+       //     } while (cursor.moveToNext());
+       // }
+
+        // return contact list
+       // return cursorList;
     }
 
     public List<Group> getAllGroups() {

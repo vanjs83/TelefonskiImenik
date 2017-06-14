@@ -3,6 +3,7 @@ package com.imenik.osmibit.telefonskiimenik;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Creates
         db = new DatabaseHandler(this);
+
         boolean insert = db.addGroup(new Group("Prijatelji"));
         if (insert == false) {
             Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
@@ -68,9 +70,16 @@ public class MainActivity extends AppCompatActivity {
         }
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
-
+        StringBuffer buffer = new StringBuffer();
+        List<Group> contact = db.getAllGroups();
+        for(Group cn : contact) {
+            String con = "Id: " + cn.getID()  + " ,Name: " + cn.getName();
+            buffer.append(con).append("\n");
         }
 
+        //createPDF(buffer);
+
+        }
 
 
     public void onSaveContact(View view) {
@@ -82,16 +91,24 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
-        boolean insert = db.addContact(new Contact(name, surname, telNumber));
+
+        boolean insert = db.addContact(new Contact(0, name, surname, telNumber));
+
 
         if (insert == false) {
             Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
         }
+
    //     db.addContact(new Contact(name, surname, telNumber));
-
-
+        StringBuffer buffer = new StringBuffer();
+         List<Contact> contact = db.getAllContacts();
+          for(Contact cn : contact) {
+            String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+            buffer.append(con).append("\n");
+        }
+        createPDF(buffer);
 
     }
 
@@ -99,14 +116,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPrintContact(View view) {
             //  writePdf();
+
         StringBuffer buffer = new StringBuffer();
-        List<Contact> contact = db.getAllContacts();
-        for (Contact cn : contact) {
-            String con = "Id: " + cn.getID() + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
-            buffer.append(con).append("\n");
+        Cursor records = db.getAllRecords();
+        if(records.getCount() == 0)
+            return;
+
+            while (records.moveToNext()) {
+
+                //    String con = "Id: " + cn.getID() + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+                  buffer.append("Id: " + records.getString(0)).append("\n");
+                  buffer.append("idGroup: " + records.getString(1)).append("\n");
+                  buffer.append("Name: " + records.getString(2)).append("\n");
+                  buffer.append("Surname: " + records.getString(3)).append("\n");
+                  buffer.append("PhoneNumber: " + records.getString(4)).append("\n");
+                  buffer.append("GroupID: " + records.getString(5)).append("\n");
+                  buffer.append("Name: " + records.getString(6)).append("\n\n");
         }
         createPDF(buffer);
-
     }
 
 
