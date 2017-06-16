@@ -36,13 +36,22 @@
         tools:ignore="HardcodedText" />
 
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editNumber"
+        android:layout_alignRight="@+id/editNumber"
+        android:layout_marginTop="10sp"/>
+
+
     <EditText
         android:id="@+id/editGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editNumber"
+        android:layout_below="@+id/spinner"
         android:layout_alignRight="@+id/editNumber"
         android:layout_alignEnd="@+id/editNumber"
         android:hint="Grupa"
@@ -68,6 +77,8 @@
         android:layout_below="@+id/editGroup"
         android:onClick="onPrintContact"
         android:text="Print" />
+
+
 
 
 </RelativeLayout>

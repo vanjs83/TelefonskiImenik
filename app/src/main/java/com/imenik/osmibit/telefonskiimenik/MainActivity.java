@@ -14,8 +14,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.itextpdf.text.DocumentException;
@@ -38,14 +41,15 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.itextpdf.text.Element.ALIGN_LEFT;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     //AppCompatActivity
     EditText mName, mSurname, mNumber, mGroup;
+    Spinner mSpinner;
     Button mButtSave, mButtPrint;
     public String name, surname, telNumber;
     DatabaseHandler db;
-    List<Contact> contact;
+    int Position=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +61,16 @@ public class MainActivity extends AppCompatActivity {
         mGroup = (EditText) findViewById(R.id.editGroup);
         mButtSave = (Button) findViewById(R.id.button);
         mButtPrint = (Button) findViewById(R.id.buttonprint);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        mSpinner.setOnItemSelectedListener(this);
+        int i=0;
 
 
-        //Creates
+        // creates
         db = new DatabaseHandler(this);
 
+
+        //Add group
         boolean insert = db.addGroup(new Group("Prijatelji"));
         if (insert == false) {
             Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
@@ -71,15 +80,46 @@ public class MainActivity extends AppCompatActivity {
         db.addGroup(new Group("Posao"));
         db.addGroup(new Group("Obitelj"));
         StringBuffer buffer = new StringBuffer();
-        List<Group> contact = db.getAllGroups();
-        for(Group cn : contact) {
+        List<Group> group = db.getAllGroups();
+        String[] str= new String[group.size()];
+        for(Group cn : group) {
             String con = "Id: " + cn.getID()  + " ,Name: " + cn.getName();
+                   str[i++] = cn.getName();
             buffer.append(con).append("\n");
         }
+
+
+
+        //edit group into spinner
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item, str);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        mSpinner.setAdapter(aa);
 
         //createPDF(buffer);
 
         }
+
+
+
+    //Performing action onItemSelected and onNothing selected
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        Toast.makeText(getApplicationContext(), position , Toast.LENGTH_LONG).show();
+        Position=position;
+
+
+
+    }
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+// TODO Auto-generated method stub
+
+    }
+
+
 
 
     public void onSaveContact(View view) {
@@ -92,8 +132,10 @@ public class MainActivity extends AppCompatActivity {
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
 
-        boolean insert = db.addContact(new Contact(0, name, surname, telNumber));
-
+        // creates
+        db = new DatabaseHandler(this);
+                                               //position
+        boolean insert = db.addContact(new Contact(Position, name, surname, telNumber));
 
         if (insert == false) {
             Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
@@ -115,8 +157,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPrintContact(View view) {
-            //  writePdf();
 
+
+
+/*
         StringBuffer buffer = new StringBuffer();
         Cursor records = db.getAllRecords();
         if(records.getCount() == 0)
@@ -134,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                   buffer.append("Name: " + records.getString(6)).append("\n\n");
         }
         createPDF(buffer);
+        */
     }
 
 
