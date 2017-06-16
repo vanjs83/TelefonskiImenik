@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
    //     db.addContact(new Contact(name, surname, telNumber));
-        StringBuffer buffer = new StringBuffer();
-         List<Contact> contact = db.getAllContacts();
+            StringBuffer buffer = new StringBuffer();
+            List<Contact> contact = db.getAllContacts();
           for(Contact cn : contact) {
             String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
             buffer.append(con).append("\n");

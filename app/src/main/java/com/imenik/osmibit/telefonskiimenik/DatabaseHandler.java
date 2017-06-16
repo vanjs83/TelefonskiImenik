@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION =2;
+    private static final int DATABASE_VERSION =3;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
@@ -154,6 +154,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return contactList;
     }
 
+
+/*
     //ADD ALL RECORD FROM CONATACT AND GROUP TABLE
     public Cursor getAllRecords() {
      //   List<Cursor> cursorList = new ArrayList<Cursor>();
@@ -174,6 +176,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
        // return cursorList;
     }
+*/
+
+
 
     public List<Group> getAllGroups() {
         List<Group> groupList = new ArrayList<Group>();
