@@ -14,7 +14,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION =3;
+
+    private static final int DATABASE_VERSION =2;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
@@ -28,6 +29,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
     }
+
+
 
     @Override
     public void onOpen(SQLiteDatabase db) {
@@ -52,8 +55,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_GROUP + " INTEGER,"
                 + KEY_NAME + " TEXT,"
                 + KEY_SURNAME + " TEXT,"
-                + KEY_PH_NO + " TEXT"
-              //  + "FOREIGN KEY(" + KEY_GROUP + ") REFERENCES " + TABLE_GROUP + "(" + KEY_GROUP  +")"
+                + KEY_PH_NO + " TEXT,"
+                + "FOREIGN KEY(" + KEY_GROUP + ") REFERENCES " + TABLE_GROUP + "(" + KEY_GROUP  +")"
                 + ");";
       // db.execSQL(CREATE_CONTACTS_TABLE);
 
@@ -74,6 +77,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
+
 
     // code to add the new contact
      public boolean addContact(Contact contact) {

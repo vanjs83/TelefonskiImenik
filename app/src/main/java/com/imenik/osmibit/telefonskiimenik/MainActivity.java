@@ -47,9 +47,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText mName, mSurname, mNumber, mGroup;
     Spinner mSpinner;
     Button mButtSave, mButtPrint;
-    public String name, surname, telNumber;
+    public String name, surname, telNumber, group;
     DatabaseHandler db;
-    int Position=0;
+    int Position = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,62 +64,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mButtSave = (Button) findViewById(R.id.button);
         mButtPrint = (Button) findViewById(R.id.buttonprint);
         mSpinner = (Spinner) findViewById(R.id.spinner);
-        mSpinner.setOnItemSelectedListener(this);
-        int i=0;
-
 
         // creates
+
         db = new DatabaseHandler(this);
-
-
-        //Add group
-        boolean insert = db.addGroup(new Group("Prijatelji"));
-        if (insert == false) {
-            Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
-        }
-        db.addGroup(new Group("Posao"));
-        db.addGroup(new Group("Obitelj"));
         StringBuffer buffer = new StringBuffer();
         List<Group> group = db.getAllGroups();
-        String[] str= new String[group.size()];
+        //  String[] str= new String[group.size()];
+        List<String> str = new ArrayList<String>();
         for(Group cn : group) {
             String con = "Id: " + cn.getID()  + " ,Name: " + cn.getName();
-                   str[i++] = cn.getName();
+            str.add(cn.getName());
+            Log.w("myGroup: ", cn.getName());
             buffer.append(con).append("\n");
         }
 
 
-
         //edit group into spinner
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item, str);
+        ArrayAdapter<String> aa = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, str);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         mSpinner.setAdapter(aa);
+        mSpinner.setOnItemSelectedListener(this);
 
-        //createPDF(buffer);
+      //  createPDF(buffer);
 
         }
 
 
 
-    //Performing action onItemSelected and onNothing selected
-    @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-        Toast.makeText(getApplicationContext(), position , Toast.LENGTH_LONG).show();
-        Position=position;
 
-
-
-    }
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-// TODO Auto-generated method stub
-
-    }
 
 
 
@@ -134,31 +110,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // creates
         db = new DatabaseHandler(this);
-                                               //position
-        boolean insert = db.addContact(new Contact(Position, name, surname, telNumber));
+                                                  //position
+
+        if(Position == -1) {
+            boolean insert = db.addContact(new Contact(name, surname, telNumber));
+
+            if (insert == false) {
+                Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            boolean insert = db.addContact(new Contact(Position, name, surname, telNumber));
 
         if (insert == false) {
             Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
+           }
         }
 
    //     db.addContact(new Contact(name, surname, telNumber));
             StringBuffer buffer = new StringBuffer();
             List<Contact> contact = db.getAllContacts();
           for(Contact cn : contact) {
-            String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
-            buffer.append(con).append("\n");
+              String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+              Log.w("myContact: ",con);
+              buffer.append(con).append("\n");
         }
-        createPDF(buffer);
+      //  createPDF(buffer);
 
     }
 
 
 
     public void onPrintContact(View view) {
-
-
 
 /*
         StringBuffer buffer = new StringBuffer();
@@ -182,12 +169,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+    public void onNewGroupContact(View view) {
+
+        db = new DatabaseHandler(this);
+        //Add new group into
+        group = mGroup.getText().toString();
+        System.out.println("NAME GROUP: " + group);
+
+        //Add group
+        boolean insert = db.addGroup(new Group(group));
+        if (!insert) {
+            Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+
+
+
     private void viewPdf(File path){
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(path), "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
+
+
 
 
 
@@ -236,6 +246,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             doc.close();
 
         }
+    }
+
+    //Performing action onItemSelected and onNothing selected
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+
+        Position=position;
+    }
+
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+     // TODO Auto-generated method stub
+        Position = -1;
+
     }
 
 

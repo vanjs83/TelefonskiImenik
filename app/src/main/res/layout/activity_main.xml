@@ -54,7 +54,7 @@
         android:layout_below="@+id/spinner"
         android:layout_alignRight="@+id/editNumber"
         android:layout_alignEnd="@+id/editNumber"
-        android:hint="Grupa"
+        android:hint="NewGroup"
         />
 
 
@@ -78,7 +78,18 @@
         android:onClick="onPrintContact"
         android:text="Print" />
 
-
+    <Button
+        android:id="@+id/buttongroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:text="NewGroup"
+        android:onClick="onNewGroupContact"
+        android:layout_alignBaseline="@+id/buttonprint"
+        android:layout_alignBottom="@+id/buttonprint"
+        android:layout_toRightOf="@+id/buttonprint"
+        android:layout_toEndOf="@+id/buttonprint" />
 
 
 </RelativeLayout>
