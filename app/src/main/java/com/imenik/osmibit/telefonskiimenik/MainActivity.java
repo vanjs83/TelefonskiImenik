@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
-        mName.setHint("");
+
         // creates
         db = new DatabaseHandler(this);
         //position
