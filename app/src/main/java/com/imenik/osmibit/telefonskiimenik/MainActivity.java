@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Button mButtSave, mButtPrint;
     public String name, surname, telNumber, group;
     DatabaseHandler db;
-    int Position = 0;
+    int Position = -1;
 
 
     @Override
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         db = new DatabaseHandler(this);
         StringBuffer buffer = new StringBuffer();
         List<Group> group = db.getAllGroups();
-        //  String[] str= new String[group.size()];
         List<String> str = new ArrayList<String>();
         for(Group cn : group) {
             String con = "Id: " + cn.getID()  + " ,Name: " + cn.getName();
@@ -107,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         System.out.println("SURNAME :" + surname);
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
+        mName.setHint("");
 
         // creates
         db = new DatabaseHandler(this);
                                                   //position
-
         if(Position == -1) {
             boolean insert = db.addContact(new Contact(name, surname, telNumber));
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
            }
         }
-
    //     db.addContact(new Contact(name, surname, telNumber));
             StringBuffer buffer = new StringBuffer();
             List<Contact> contact = db.getAllContacts();
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
               Log.w("myContact: ",con);
               buffer.append(con).append("\n");
         }
-      //  createPDF(buffer);
+        createPDF(buffer);
 
     }
 
@@ -175,11 +173,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Add new group into
         group = mGroup.getText().toString();
         System.out.println("NAME GROUP: " + group);
+        mGroup.setHint("");
 
         //Add group
         boolean insert = db.addGroup(new Group(group));
         if (!insert) {
-            Toast.makeText(getApplicationContext(), "Group not inserted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Group: " + group + " not allowed", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
         }
@@ -252,7 +251,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
 
-        Position=position;
+        Position= position + 1;
+
     }
 
 
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
      // TODO Auto-generated method stub
-        Position = -1;
+       // Position = -1;
 
     }
 

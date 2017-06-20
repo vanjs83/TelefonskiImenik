@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION =2;
+    private static final int DATABASE_VERSION =3;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
     private static final String TABLE_GROUP = "groups";//TABLE GROUP
@@ -47,7 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //Table for groups
         String CREATE_CONTACTS_GROUP = "CREATE TABLE " + TABLE_GROUP + "("
                 + KEY_GROUP + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_NAME + " TEXT" + ");";
+                + KEY_NAME + " TEXT UNIQUE" + ");";
 
          //Table for contacts
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
