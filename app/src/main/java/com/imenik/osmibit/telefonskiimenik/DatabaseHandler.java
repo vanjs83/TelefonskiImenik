@@ -159,28 +159,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-/*
+
     //ADD ALL RECORD FROM CONATACT AND GROUP TABLE
     public Cursor getAllRecords() {
-     //   List<Cursor> cursorList = new ArrayList<Cursor>();
+      //  List<Cursor> cursorList = new ArrayList<Cursor>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS + " tc"
-                             + " INNER JOIN " + TABLE_GROUP
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS + " AS" + " tc"
+                             + " INNER JOIN " + TABLE_GROUP + " AS"
                              + " tg" + " ON" + " tc." + KEY_GROUP + "=" + "tg." + KEY_GROUP;
 
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-       // if (cursor.moveToFirst()) {
-       //     do {
-       //         cursorList.add(cursor);
-       //     } while (cursor.moveToNext());
-       // }
 
-        // return contact list
-       // return cursorList;
     }
-*/
+
 
 
 

@@ -107,10 +107,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         telNumber = mNumber.getText().toString();
         System.out.println("TELNUBER:" + telNumber);
         mName.setHint("");
-
         // creates
         db = new DatabaseHandler(this);
-                                                  //position
+        //position
         if(Position == -1) {
             boolean insert = db.addContact(new Contact(name, surname, telNumber));
 
@@ -130,14 +129,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
            }
         }
    //     db.addContact(new Contact(name, surname, telNumber));
-            StringBuffer buffer = new StringBuffer();
-            List<Contact> contact = db.getAllContacts();
-          for(Contact cn : contact) {
-              String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
-              Log.w("myContact: ",con);
-              buffer.append(con).append("\n");
-        }
-        createPDF(buffer);
+   //         StringBuffer buffer = new StringBuffer();
+   //         List<Contact> contact = db.getAllContacts();
+   //       for(Contact cn : contact) {
+   //           String con = "Id: " + cn.getID() + " ,GroupID: " + cn.getGroupID()  + " ,Name: " + cn.getName() + " ,Suraname: " + cn.getSurname() + " ,PhoneNumber: " + cn.getPhoneNumber();
+   //           Log.w("myContact: ",con);
+   //           buffer.append(con).append("\n");
+   //     }
+    //    createPDF(buffer);
 
     }
 
@@ -145,11 +144,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void onPrintContact(View view) {
 
-/*
+        db = new DatabaseHandler(this);
         StringBuffer buffer = new StringBuffer();
         Cursor records = db.getAllRecords();
-        if(records.getCount() == 0)
+        if(records.getCount() == 0) {
+            Toast.makeText(getApplicationContext(), "No records", Toast.LENGTH_SHORT).show();
             return;
+        }
 
             while (records.moveToNext()) {
 
@@ -160,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                   buffer.append("Surname: " + records.getString(3)).append("\n");
                   buffer.append("PhoneNumber: " + records.getString(4)).append("\n");
                   buffer.append("GroupID: " + records.getString(5)).append("\n");
-                  buffer.append("Name: " + records.getString(6)).append("\n\n");
+                  buffer.append("Group Name: " + records.getString(6)).append("\n\n");
         }
         createPDF(buffer);
-        */
+
     }
 
 
@@ -182,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
         }
+        finish();
+        startActivity(getIntent());
 
     }
 
