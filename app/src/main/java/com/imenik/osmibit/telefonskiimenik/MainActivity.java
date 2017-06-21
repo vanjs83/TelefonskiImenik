@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.print.PrintAttributes;
+import android.print.PrintManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(getIntent());
             }
         }
         else {
@@ -177,16 +181,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             boolean insert = db.addGroup(new Group(group));
             if (!insert) {
                 Toast.makeText(getApplicationContext(), "Group: " + group + " not allowed", Toast.LENGTH_LONG).show();
+
             } else {
                 Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(getIntent());
             }
         }
         else {
             Toast.makeText(getApplicationContext(), "Edit name group", Toast.LENGTH_LONG).show();
         }
 
-        finish();
-        startActivity(getIntent());
+   //     finish();
+    //    startActivity(getIntent());
 
     }
 
@@ -195,7 +202,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         intent.setDataAndType(Uri.fromFile(path), "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+
+        
+       // PrintManager printManager = (PrintManager) this .getSystemService(Context.PRINT_SERVICE);
+
     }
+
 
 
     public void createPDF(StringBuffer buffer) {//This method works for create pdf file
