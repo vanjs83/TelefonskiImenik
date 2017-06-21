@@ -72,14 +72,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // creates
 
         db = new DatabaseHandler(this);
-        StringBuffer buffer = new StringBuffer();
         List<Group> group = db.getAllGroups();
         List<String> str = new ArrayList<String>();
         for(Group cn : group) {
-            String con = "Id: " + cn.getID()  + " ,Name: " + cn.getName();
             str.add(cn.getName());
             Log.w("myGroup: ", cn.getName());
-            buffer.append(con).append("\n");
         }
 
 
@@ -204,10 +201,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         intent.setDataAndType(Uri.fromFile(path), "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
-
-
        // PrintManager printManager = (PrintManager) this .getSystemService(Context.PRINT_SERVICE);
-
     }
 
 

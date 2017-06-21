@@ -160,7 +160,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
 
-    //ADD ALL RECORD FROM CONATACT AND GROUP TABLE
+    //GET ALL RECORD FROM CONATACT AND GROUP TABLE
     public Cursor getAllRecords() {
       //  List<Cursor> cursorList = new ArrayList<Cursor>();
         // Select All Query
