@@ -41,6 +41,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.itextpdf.text.Element.ALIGN_CENTER;
 import static com.itextpdf.text.Element.ALIGN_LEFT;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
 
-        
+
        // PrintManager printManager = (PrintManager) this .getSystemService(Context.PRINT_SERVICE);
 
     }
@@ -233,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             doc.addAuthor("Tihomir Vanjurek");
             /* Create Paragraph and Set Font */
             Paragraph p1 = new Paragraph("This is an PhoneBook");
-            p1.setAlignment(ALIGN_LEFT);
+            p1.setAlignment(ALIGN_CENTER);
             //add paragraph to document
             doc.add(p1);
             //add new page
