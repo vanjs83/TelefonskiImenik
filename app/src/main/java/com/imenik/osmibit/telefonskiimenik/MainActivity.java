@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Button mButtSave, mButtPrint;
     public String name, surname, telNumber, group;
     DatabaseHandler db;
-    int Position = -1;
+    int Position = 0;
 
 
     @Override
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // creates
         db = new DatabaseHandler(this);
         //position
-        if(Position == -1) {
-            boolean insert = db.addContact(new Contact(name, surname, telNumber));
+        if(!name.isEmpty() || !surname.isEmpty() && !telNumber.isEmpty()) {
+            boolean insert = db.addContact(new Contact(Position, name, surname, telNumber));
 
             if (insert == false) {
                 Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
@@ -120,14 +120,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         else {
-            boolean insert = db.addContact(new Contact(Position, name, surname, telNumber));
+            Toast.makeText(getApplicationContext(), "Please insert some informations", Toast.LENGTH_LONG).show();
 
-        if (insert == false) {
-            Toast.makeText(getApplicationContext(), "Contact not inserted", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Contact inserted", Toast.LENGTH_LONG).show();
-           }
         }
+
    //     db.addContact(new Contact(name, surname, telNumber));
    //         StringBuffer buffer = new StringBuffer();
    //         List<Contact> contact = db.getAllContacts();
@@ -174,23 +170,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Add new group into
         group = mGroup.getText().toString();
         System.out.println("NAME GROUP: " + group);
-        mGroup.setHint("");
+
 
         //Add group
-        boolean insert = db.addGroup(new Group(group));
-        if (!insert) {
-            Toast.makeText(getApplicationContext(), "Group: " + group + " not allowed", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
+        if(!group.isEmpty()) {
+            boolean insert = db.addGroup(new Group(group));
+            if (!insert) {
+                Toast.makeText(getApplicationContext(), "Group: " + group + " not allowed", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Group inserted", Toast.LENGTH_LONG).show();
+            }
         }
+        else {
+            Toast.makeText(getApplicationContext(), "Edit name group", Toast.LENGTH_LONG).show();
+        }
+
         finish();
         startActivity(getIntent());
 
     }
-
-
-
-
 
     private void viewPdf(File path){
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -198,9 +196,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
-
-
-
 
 
     public void createPDF(StringBuffer buffer) {//This method works for create pdf file
